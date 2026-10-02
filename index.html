@@ -260,6 +260,7 @@ a{color:var(--slate);text-decoration:none}
   display:flex;align-items:center;justify-content:center;gap:6px;font-size:15px;font-weight:700;margin-bottom:13px;
 }
 .rlh{margin:16px 0 10px;font-size:14px;font-weight:600;color:var(--ink2)}
+.donebox{margin:18px 0 6px}.donebox summary{cursor:pointer;font-size:13px;color:var(--ink2);padding:8px 0}
 .rl{list-style:none;margin:0;padding:0}
 .rl li{display:flex;gap:11px;align-items:flex-start}
 .rl .gut{flex:0 0 auto;width:11px;display:flex;flex-direction:column;align-items:center;align-self:stretch}
@@ -641,27 +642,29 @@ var DAYS = [
 /* ---------------- D1 ---------------- */
 {
   n:1, date:"2026-10-06", dow:"周二", city:"落地罗马",
-  line:"19:10 落地 FCO，官方出租进城，约 22:00 到民宿",
+  line:"19:10 落地 FCO → 过关取行李约 1 小时 → 官方出租 40 分钟进城 → 约 21:15 到民宿",
   drive:"", stayShort:"罗马 Castro Pretorio",
   stay:{ t:"罗马 Castro Pretorio 3 · 10/6-10/9 共 3 晚", d:"房东 Sara｜Via del Castro Pretorio 30｜入住 15:00 后 · 亲自迎接 · 退房 10:00。", addr:"Via del Castro Pretorio 30, 00185 Roma" },
   wc:["roma"],
+  flag:"※ 只坐门口官方车队的白色出租，一口价 €55 一车。落地、上车各给 Sara 发一条消息。明早 10:15 Luna 吃早午饭，家里不用准备早饭",
   route:[
-    {n:"罗马 FCO 机场 T3", m:"Rome Fiumicino Airport Terminal 3", leg:"🚕 官方出租 约 40 分钟"},
+    {n:"罗马 FCO 机场 T3", m:"Rome Fiumicino Airport Terminal 3", leg:"🚕 官方出租 40 分钟 €55 一车 · 🚆 Leonardo Express 32 分钟到 Termini €14/人 + 🚶 10 分钟"},
     {n:"Castro Pretorio 3 民宿", m:"Via del Castro Pretorio 30 Roma"}
   ],
   steps:[
     { id:"d1-1", t:"19:10", hard:"航班落地，硬时间", e:"✈️", a:"MU787 落地 FCO T3", it:"Fiumicino T3",
-      sub:"过关：首次入境要拍照 + 按四指指纹（EES），排队 30-60 分钟 → 跟 Baggage Claim 标志取行李 → 海关走绿色通道 → 出到达厅跟 TAXI 标志到门口官方车队。",
       need:["三本护照","去程预订号 QBYYGV","每人托运 2 件 × 23kg"] },
-    { id:"d1-2", t:"约 20:30", e:"🚕", a:"官方车队打车进城", it:"Taxi ufficiale",
-      sub:"认车门带 Roma Capitale 徽章的白色车，进城一口价 55 欧一辆（含行李），可刷卡；车程约 40 分钟。",
+    { id:"d1-2", t:"19:20", e:"🛂", a:"过关 + 取行李，约 1 小时",
+      sub:"首次入境要拍照 + 按四指指纹（EES），排队 30-60 分钟 → 跟 Baggage Claim 标志取行李 → 海关走绿色通道。",
+      tips:["落地先给 Sara 发一条：「落地了，约 1.5 小时后到」"] },
+    { id:"d1-3", t:"20:30", e:"🚕", a:"官方车队出租 40 分钟进城，€55 一车含行李", it:"Taxi ufficiale",
+      sub:"出到达厅跟 TAXI 标志到门口官方车队，认车门带 Roma Capitale 徽章的白色车，可刷卡。备选：Leonardo Express 火车 32 分钟到 Termini（€14/人，每 15 分钟一班）再拖箱子走 10 分钟——三人带行李不划算，坐出租。",
       warn:["只走门口官方车队，不理大厅里拉客的","意大利不能路边招手，打车用 FreeNow"],
+      tips:["上车再发一条：「上车了，40 分钟到」"],
       nav:{m:"Via del Castro Pretorio 30 Roma", mode:"driving"} },
-    { id:"d1-3", t:"落地 + 上车", e:"📱", a:"给房东 Sara 发两条消息",
-      sub:"落地一条「落地了，约 1.5 小时后到」，上车一条「上车了，40 分钟到」——她亲自迎接。",
-      need:["Airbnb App 订单页（门锁密码和 WiFi 入住前 48 小时可见）"] },
-    { id:"d1-4", t:"约 21:30-22:00", e:"🔑", a:"到 Via del Castro Pretorio 30", it:"Castro Pretorio 3",
-      sub:"房东 Sara 亲自迎接；退房 10:00。",
+    { id:"d1-4", t:"21:15", e:"🔑", a:"到 Via del Castro Pretorio 30，Sara 亲自迎接", it:"Castro Pretorio 3",
+      sub:"退房 10:00。",
+      need:["Airbnb App 订单页（门锁密码和 WiFi 入住前 48 小时可见）"],
       nav:{m:"Via del Castro Pretorio 30 Roma", mode:"walking"} }
   ]
 },
@@ -934,14 +937,14 @@ var DAYS = [
       nav:{m:"La Taverna di San Giuseppe Siena", mode:"walking"} },
     { id:"d4-7", t:"15:15", e:"🚶", a:"走 10 分钟到大教堂",
       nav:{m:"Duomo di Siena", mode:"walking"} },
-    { id:"d4-8", t:"15:25", hard:"天空之门 16:00 场，官网买 €21/人", e:"⛪", a:"锡耶纳大教堂：先看地面 + 皮科洛米尼图书馆 25 分钟，15:50 到屋顶导览集合点", it:"Duomo di Siena",
+    { id:"d4-8", t:"15:25", hard:"天空之门 16:00 场，官网买 €21/人", e:"⛪", a:"锡耶纳大教堂：先看地面 + 皮科洛米尼图书馆 15 分钟，15:40 到屋顶导览集合点（要求提前 20 分钟）", it:"Duomo di Siena",
       sub:"€21 一张票全含（教堂、图书馆、地下室、洗礼堂、博物馆都能进，今天只看前两样）。地面 56 幅大理石镶嵌只揭到 11/15。看点：地面、Pinturicchio 画满四壁的图书馆、皮萨诺讲道坛、米开朗基罗和贝尼尼的雕像；手机扫码免费语音导览。",
       need:["天空之门电子票 €21 × 3（官网订 10/9 16:00 场）"],
       link:{u:"https://operaduomo.siena.it/en/the-gate-of-heaven/", l:"官网 · 天空之门"},
       ticket:true, nav:{m:"Duomo di Siena", mode:"walking"}, place:"Duomo di Siena",
       video:"https://search.bilibili.com/all?keyword=%E9%94%A1%E8%80%B6%E7%BA%B3%E5%A4%A7%E6%95%99%E5%A0%82%20%E8%AE%B2%E8%A7%A3" },
-    { id:"d4-8b", t:"16:00", hard:"16:00 场，提前 10 分钟到集合点", e:"🪜", a:"天空之门屋顶导览 30 分钟：旋梯上到教堂上层廊道俯瞰地面，再出去屋顶露台看全城", it:"Porta del Cielo",
-      sub:"18 人一组，向导前后各一个带着走；窄旋梯，恐高慎走。",
+    { id:"d4-8b", t:"16:00", hard:"16:00 场，提前 20 分钟到集合点", e:"🪜", a:"天空之门屋顶导览 30 分钟：旋梯上到教堂上层廊道俯瞰地面，再出去屋顶露台看全城", it:"Porta del Cielo",
+      sub:"18 人一组，向导前后各一个带着走；窄旋梯，恐高慎走。16:30 出来，地面没看够回头补 5 分钟。",
       nav:{m:"Duomo di Siena", mode:"walking"} },
     { id:"d4-9", t:"16:35", e:"🚶", a:"走 10 分钟回停车场",
       nav:{m:"Parcheggio Santa Caterina Siena", mode:"walking"} },
@@ -1565,7 +1568,7 @@ var DAYS = [
   drive:"", stayShort:"米兰 Modern Apartment",
   stay:{ t:"米兰 Modern Apartment · 第 2 晚（明早退房）", d:"Viale Lunigiana 4 · 退房 10:00 · 22:00 后安静。", addr:"Viale Lunigiana 4, 20125 Milano" },
   wc:["milano"],
-  flag:"※ 10:00 场是硬时间：9:30 到售票处，凭淘宝电子凭证（PDF）+ 三本护照激活票。退税单收好，明天机场办",
+  flag:"※ 10:00 场是硬时间：9:30 到售票处，凭淘宝电子凭证（PDF）+ 三本护照激活票。退税单收好，明天机场办。明早 7:50 退房，车站里吃早饭",
   route:[
     {n:"民宿 Viale Lunigiana 4", m:"Viale Lunigiana 4 Milano", leg:"🚶 10 分钟"},
     {n:"早饭 Mercato Centrale（中央车站里）", m:"Mercato Centrale Milano", leg:"🚇 M2 绿线五站到 Cadorna 10 分钟 · 🚕 15 分钟"},
@@ -1668,19 +1671,19 @@ var DAYS = [
 /* ---------------- D12 ---------------- */
 {
   n:12, date:"2026-10-17", dow:"周六", city:"回家",
-  line:"8:55 Malpensa Express 到 T1：退税 → 值机 → 安检 → 免税店 → 护照检查，13:55 起飞",
+  line:"7:50 退房 → 走 10 分钟到中央车站吃早饭 → 8:55 Malpensa Express 51 分钟到 T1 → 退税 → 值机 → 安检 → 免税店 → 护照检查，13:55 起飞",
   drive:"", stayShort:"—",
   stay:null,
   wc:["milano"],
-  flag:"※ 值机托运截止 12:55；免税店在护照检查之前，买完再去排人工护照柜台（EES 登记慢），12:15 前必须排进去",
+  flag:"※ 值机托运截止 12:55；免税店在护照检查之前，买完再去排人工护照柜台（EES 登记慢），12:15 前必须排进去。最晚坐 9:25 那班火车",
   route:[
-    {n:"民宿 Viale Lunigiana 4", m:"Viale Lunigiana 4 Milano", leg:"步行约 6 分钟"},
-    {n:"Mercato Centrale Milano（中央车站内）", m:"Mercato Centrale Milano", leg:"🚆 Malpensa Express 8:55 发 · 51 分钟"},
+    {n:"民宿 Viale Lunigiana 4", m:"Viale Lunigiana 4 Milano", leg:"🚶 10 分钟 · 🚕 到机场 50 分钟 €114 一车（固定价）"},
+    {n:"Mercato Centrale Milano（中央车站内）", m:"Mercato Centrale Milano", leg:"🚆 Malpensa Express 8:55 发 · 51 分钟 · €15/人"},
     {n:"马尔彭萨机场 T1", m:"Malpensa Terminal 1"}
   ],
   steps:[
-    { id:"d12-1", t:"7:50", e:"🧳", a:"退房，步行 6 分钟到中央车站",
-      sub:"今天要留足时间：退税、人工护照检查、免税店三件事都慢，所以早走一小时。",
+    { id:"d12-1", t:"7:50", e:"🧳", a:"退房，走 10 分钟到中央车站",
+      sub:"今天要留足时间：退税、人工护照检查、免税店三件事都慢。下雨或行李太多：让房东 Luca 帮忙叫车，官方固定价 €114 一车到 Malpensa，门到门约 50 分钟，7:45 出发。",
       nav:{m:"Milano Centrale", mode:"walking"} },
     { id:"d12-2", t:"8:00", e:"🥐", a:"早饭 Mercato Centrale Milano，40 分钟", kind:"eat",
       sub:"就在中央车站里（Via Sammartini 那侧，站内一层）。挑咸口摊位，吃完直接去站台。",
@@ -1692,16 +1695,19 @@ var DAYS = [
          b:"不订位，直接去", m:"Mercato Centrale Milano"}
       ],
       nav:{m:"Mercato Centrale Milano", mode:"walking"} },
-    { id:"d12-3", t:"8:55", hard:"最晚坐 9:25 那班", e:"🚆", a:"Malpensa Express 直达 T1，51 分钟（9:46 到）",
-      sub:"坐到终点站 Malpensa Aeroporto T1 下车，别在 T2 下。",
-      tips:["火车还是打车：三人火车 €45、51 分钟、不堵车，车站离民宿 6 分钟，推荐火车；打车是官方固定价 €114 一车（到 Malpensa 不打表、含行李，2026 年沿用），门到门约 50 分钟，下雨或行李太多爸妈累就让房东 Luca 帮忙叫车，7:45 出发","票价 €15/人（4-13 岁 €7.50），没有老人票；Centrale 出发每小时 :25 和 :55 两班，周六照跑","怎么买：Trenord App 或 malpensaexpress.it 在线买，电子票不用打卡；或站内 Trenord 售票机 / 窗口买纸票，上车前在打票机打卡；也可以每人拿自己的非接触信用卡直接刷 Pay&Go 闸机进站","站台：官网写 Malpensa Express 的售票机和闸机在 3 号站台端，实际发车站台看大屏（1-3 号都可能），全在同一层，别往楼上找","出发前 3 天查一下 trenord.it 的 Info Mobilità，有没有施工改公交"],
+    { id:"d12-3", t:"8:40", e:"🚶", a:"走 5 分钟到站台：看大屏，Malpensa Express 在 1-3 号站台之一，同一层",
+      tips:["每人拿自己的非接触信用卡刷 Pay&Go 闸机进站，或 Trenord App 电子票（10/15 买好的）"],
+      nav:{m:"Milano Centrale", mode:"walking"} },
+    { id:"d12-4", t:"8:55", hard:"最晚坐 9:25 那班", e:"🚆", a:"Malpensa Express 直达 T1，51 分钟（9:46 到）",
+      sub:"坐到终点站 Malpensa Aeroporto T1 下车，别在 T2 下。€15/人，Centrale 每小时 :25 和 :55 两班，周六照跑。",
+      tips:["出发前 3 天查一下 trenord.it 的 Info Mobilità，有没有施工改公交"],
       link:{u:"https://www.malpensaexpress.it/en/", l:"Malpensa Express 官网"},
       nav:{m:"Malpensa Terminal 1", mode:"transit"} },
-    { id:"d12-4", t:"9:50", hard:"值机托运截止 12:55", e:"🧾", a:"到 T1：先退税验证，再值机托运，然后安检",
-      sub:"是的，在意大利机场退：马尔彭萨是离开欧盟的最后一站。退税处在出发层 17 号口进去、12 号区（Global Blue 自助机 + 人工、Planet 人工、ADM 海关柜台都在一起，以指示牌为准），起飞前 4 小时才能开始办，9:55 起正好。办完再去东航柜台值机托运。",
-      tips:["退税门槛：同一张发票 €70.01 以上；现金退要手续费，退回信用卡更划算","流程（2026 年 8 月小红书实测帖 + 海关官网）：意大利买的 Global Blue 单先去自助机扫，全绿就完事；机器要求查验（红通道）就去旁边 ADM 海关柜台盖章验货，再到 Global Blue 人工柜台；Planet 的单直接走人工，当场到账；单据先按公司分好、数清张数再递过去，盖完章的先拍照留底","东西不能用过、吊牌留着、别穿在身上，海关要看得出来；退税商品先别托运，办完再值机","值机一般起飞前 3 小时开、1 小时关；东航在 T1 的具体值机岛出发前查东航官网或看大屏","安检后先逛：Piazza del Lusso 奢侈品区（Armani、Bulgari、Hermès、Moncler、Tod's 这些）在安检之后、护照检查之前——买东西在过护照检查前完成，过去以后有没有店没核实","护照检查走人工柜台（自动闸机只给欧盟护照）；2026 年 4 月起 EES 出入境系统上线，首次登记每人约 5 分钟，排队可能很长：12:15 前必须排进去；想省安检时间可以线上买 Fast Track €9（只快安检，不快护照检查）"],
+    { id:"d12-5", t:"9:50", hard:"值机托运截止 12:55", e:"🧾", a:"到 T1：先退税验证，再值机托运，然后安检",
+      sub:"退税处在出发层 17 号口进去、12 号区（Global Blue 自助机 + 人工、Planet 人工、ADM 海关柜台都在一起），起飞前 4 小时才能开始办，9:55 起正好。办完再去东航柜台值机托运。",
+      tips:["退税门槛：同一张发票 €70.01 以上；现金退要手续费，退回信用卡更划算","流程：意大利买的 Global Blue 单先去自助机扫，全绿就完事；机器要求查验（红通道）就去旁边 ADM 海关柜台盖章验货，再到 Global Blue 人工柜台；Planet 的单直接走人工；单据先按公司分好、数清张数再递过去，盖完章的先拍照留底","东西不能用过、吊牌留着、别穿在身上；退税商品先别托运，办完再值机","值机一般起飞前 3 小时开、1 小时关；东航在 T1 的具体值机岛出发前查东航官网或看大屏","安检后先逛：Piazza del Lusso 奢侈品区在安检之后、护照检查之前，买东西在过护照检查前完成","护照检查走人工柜台（自动闸机只给欧盟护照）；EES 首次登记每人约 5 分钟，排队可能很长：12:15 前必须排进去；想省安检时间可以线上买 Fast Track €9（只快安检，不快护照检查）"],
       need:["退税单 + 对应商品（别托运）","三本护照","回程预订号 NLP9CY"] },
-    { id:"d12-5", t:"13:55", hard:"起飞", e:"✈️", a:"MU244 起飞",
+    { id:"d12-6", t:"13:55", hard:"起飞", e:"✈️", a:"MU244 起飞",
       sub:"10/18 周日 06:55 落地浦东。" }
   ]
 }
@@ -2032,109 +2038,111 @@ var MAP_KEYS = {2:["2"],3:["3"],4:["4","4b"],5:["5a","5b"],6:["6a","6b","6c"],7:
 
 /* ---------------- 准备（抢票和订位） ---------------- */
 var PREP = [
-{ when:"现在做 · 9/17-9/20", items:[
-  { id:"prep-1", cat:"🎫 门票 / 讲解团", a:"斗兽场 + 古罗马广场 + 帕拉蒂尼山讲解团：已订罗罗旅行 10/7 13:30 场（含 Arena）",
-    d:"含票，3 人，用护照拼音出票：TANG YANHUI / SU YIWEN / ZHU YING。斗兽场门口集合，13:00 到；2.5-3 小时。" },
-  { id:"prep-2", cat:"🎫 门票 / 讲解团", a:"梵蒂冈讲解团：已订罗罗旅行 10/8 13:30 场",
-    d:"含票，3 人。梵蒂冈博物馆入口集合，13:00 到，按通知。" },
-  { id:"prep-3", cat:"🎫 门票 / 讲解团", a:"博尔盖塞美术馆：售罄，放弃；10/7 下午改卡比托利欧博物馆、10/8 上午 Doria Pamphilj，都现场买票",
-    d:"9/21 邮件问过 tosc.it，所有场次 sold out；第三方英文团 €125/人起不买；排现场票不赌。替代：10/7 卡比托利欧博物馆（每天开，€15，末入 18:30，马可·奥勒留铜像 + 母狼 + 垂死的高卢人 + 两幅卡拉瓦乔）+ 早上免费看圣母胜利教堂的贝尼尼《圣特雷莎的狂喜》；10/8 Doria Pamphilj（周四开，€16 含语音导览，委拉斯开兹《英诺森十世》+ 两幅卡拉瓦乔 + 贝尼尼胸像）。",
-    link:{u:"https://www.museicapitolini.org/en", l:"museicapitolini.org"} },
-  { id:"prep-4", cat:"🎫 门票 / 讲解团", a:"学院美术馆 + 巴杰罗 48 小时通票：已买（€26/人，学院 10/10 15:30 场）",
-    d:"巴杰罗排在 10/10 学院出来后（可选），用同一张二维码进，不用再买；确认邮件截图存到手机相册。",
-    link:{u:"https://www.b-ticket.com", l:"b-ticket.com"} },
-  { id:"prep-5", cat:"🎫 门票 / 讲解团", a:"乌菲兹讲解团：订 10/11 9:00 场",
-    d:"含票。" },
-  { id:"prep-5b", cat:"🎫 门票 / 讲解团", a:"圣马可大教堂：不用买票（10/12 上午所有票种已售罄，Day 7 只看外观）",
-    d:"官网 9/24 核过：10/12 只剩 13:00 以后的场，和 14:30 取车进山冲突，不排。想赌退票：出发前再看一次官方售票页，有 9:30 或 10:30 场就买 Complete 联票（大教堂 + 黄金祭坛 + 博物馆露台，成人 €30、65 岁以上 €15），Day 7 的 10:20 广场那步改成进去看 1 小时。",
-    link:{u:"https://tickets.basilicasanmarco.it/", l:"官方售票页 tickets.basilicasanmarco.it"} },
-  { id:"prep-10", cat:"🚗 租车", a:"Europcar 已订（订单 1207535989）：10/9 周五 9:30 Termini 取，10/15 周四 16:00 米兰 Via Vittor Pisani 19 还",
-    d:"主驾妈妈 ZHU YING，第二驾驶员已含。VW Tiguan 自动挡或同级（4 件行李），Comfort+ 套餐：Premium 保障（碰撞、盗窃、关键部件）+ 道路救援 Plus + 单程费 + 第二驾驶员，已付 €857.04，取车只冻 €100 押金。取车：Rome Termini Railway Station，Via Giolitti 34 车站租车中心，当天 8:00–20:00，电话 +39 06 4882854；在线值机失败，柜台人工核证件。还车：车开进 Via Vittor Pisani 19 地下二层，门店在 Via Luigi Galvani 12，当天 7:30–21:00，电话 +39 02 66987826。带：每位驾驶员驾照原件 + 意大利语宣誓翻译件 + 护照；妈妈本人名下实体信用卡（不收虚拟卡、预付卡、Maestro、手机支付）。油：满取满还，进米兰前加满。10/7 9:30 前免费改或取消，之后取消扣 €50、不去扣 €250；查询 europcarres@europcar.com。合同上看 Carburante（油种）和 Franchigia（免赔额）两栏。",
-    link:{u:"https://www.europcar.it/?openB2cLogin=true", l:"My Europcar 查订单"} },
-  { id:"prep-6", cat:"💬 给房东发消息", a:"罗马 Sara：10/6 19:10 落地，约 21:30-22:00 到",
-    d:"落地和上车各发一条消息，请她接应——这单是亲自迎接，不是密码锁。" },
-  { id:"prep-7", cat:"💬 给房东发消息", a:"佛罗伦萨 Donna：车位 + ZTL 报牌 + 代订 Cammillo",
-    d:"一次问清：车位在哪；10/10 12:00 放行李（她已答应）；帮报 ZTL 车牌；10/11 停到 14:30。" },
-  { id:"prep-8", cat:"💬 给房东发消息", a:"米兰 Luca：问入住方式",
-    d:"Viale Lunigiana 4，15:00 后入住。" },
-  { id:"prep-9", cat:"💬 给房东发消息", a:"Mestre 酒店：10/11 晚要车位，10/12 车停到 14:00",
-    d:"Best Western Plus Hotel Bologna，电话 0039-041-931000。" },
-  { id:"prep-13", cat:"📄 证件", a:"签证约号递交 + 两个驾驶员的驾照翻译件",
-    d:"VFS 上海四川中路 213 号。驾照翻译二选一：宣誓翻译件，或公证处公证 + 海牙认证（约 ¥600、要一两周，现在就办）；租租车 App 免费办小白本一起带。" }
-], note:"六站住宿已订好。Airbnb 的门锁密码和 WiFi，入住前 48 小时在 App 订单页看。" },
-{ when:"9/21-9/25 做 · 全部在线或邮件", items:[
-  { id:"prep-14", cat:"🎫 门票", a:"圣马可修道院：不用预约，10/11 当天现场买（€11/人）",
-    d:"官方信息：周二到周日 8:30–13:50，末入 12:45，周一和每月第五个周日闭馆；10/11 是第二个周日，开。预约不是必须的，小馆不排队，到门口买就行。",
-    link:{u:"https://museitoscana.cultura.gov.it/luoghi_della_cultura/museo_di_san_marco/", l:"官方页面"} },
-  { id:"prep-15", cat:"🎫 门票", a:"锡耶纳大教堂 10/9 联票 OPA SI PASS",
-    d:"官方售票在 Vivaticket：进链接选 OPA SI PASS → 日期 09/10/2026 → 3 张 → 付款。也可现场买，10 月是地面揭开期（到 10/31），周五 10:00–19:00。",
-    link:{u:"https://operalaboratori.vivaticket.it/", l:"官方售票页 operalaboratori.vivaticket.it"} },
+{ when:"🎫 线上买票（能网上买的都网上买）", items:[
+  { id:"prep-32", cat:"🎫 门票", a:"万神殿 10/8 9:00 时段票 €7 × 3：Musei Italiani 实名买",
+    d:"官方只认 Musei Italiani（网页或同名 App，先注册账号）：搜 Pantheon → 日期 08/10/2026 → 时段 9:00 → 3 张 Intero €7 → 填三个人名 → 刷卡 → 二维码在 App 和邮件里，进门出示 + 护照。",
+    link:{u:"https://portale.museiitaliani.it/", l:"官方售票 portale.museiitaliani.it"} },
+  { id:"prep-38", cat:"🎫 门票", a:"锡耶纳天空之门 Porta del Cielo：10/9 16:00 场 €21 × 3（含整个教堂 + 图书馆）",
+    d:"官网 operaduomo.siena.it 或 vivaticket 买；30 分钟一场、18 人，提前 20 分钟到集合点。订不到 16:00 就现场买最近一场。",
+    link:{u:"https://operaduomo.siena.it/en/the-gate-of-heaven/", l:"operaduomo.siena.it"} },
   { id:"prep-27", cat:"🎫 门票", a:"米兰大教堂 Combo Lift 票 €26 × 3（10/15 17:00 那档，露台看日落）",
     d:"含教堂 + 电梯上屋顶 + 博物馆 + San Gottardo，两天有效；官网买，手机出示。",
     link:{u:"https://ticket.duomomilano.it/en/", l:"ticket.duomomilano.it"} },
   { id:"prep-27b", cat:"🎫 门票", a:"《最后的晚餐》10/16 10:00 已出票（2 成人 1 青年）：PDF 存进三台手机",
-    d:"凭证在邮箱 10/2 那封（liulrf@vip.qq.com）附件里。当天 9:30 到售票处，凭 PDF + 三本护照激活，再到入口检票。",
+    d:"凭证在邮箱 10/2 那封（liulrf@vip.qq.com）附件里。当天 9:30 到售票处，凭 PDF + 三本护照激活，再到入口检票。青年票是 18–25 岁的减价票，持票人要带证件对年龄。",
     link:{u:"https://cenacolovinciano.vivaticket.it", l:"cenacolovinciano.vivaticket.it"} },
-  { id:"prep-11", cat:"🍽 订位", a:"La Taverna di San Giuseppe 官网订 10/9 午 13:45（锡耶纳）",
-    link:{u:"https://www.tavernasangiuseppe.it", l:"tavernasangiuseppe.it"} },
-  { id:"prep-12", cat:"🍽 订位", a:"Acquacheta 请房东 Arnd 代打（10/9 晚 19:30 · 3 人）",
-    d:"电话 +39 0578 717086，只收电话。订不上改 La Grotta 官网表单。" },
-  { id:"prep-22", cat:"🍽 订位", a:"Coquinarius（10/10 午 12:30 · 佛罗伦萨）",
-    d:"TheFork 或电话。" },
-  { id:"prep-37", cat:"🍽 订位", a:"Antica Trattoria da Tito（10/11 午 12:45 · 佛罗伦萨）",
-    d:"圣马可修道院旁走 5 分钟，周日午市 12:30 起；电话 +39 055 472475，或让 Donna 代打。",
-    link:{u:"https://www.trattoriadatito.com/", l:"trattoriadatito.com"} },
-  { id:"prep-16", cat:"🍽 订位", a:"Cibrèo Ristorante（10/10 晚 19:30 · 佛罗伦萨）",
-    d:"TheFork 在线订。" },
-  { id:"prep-21", cat:"🍽 订位", a:"Traubenwirt（10/12 晚 19:30 · Brixen）",
-    d:"电话 +39 0472 836552；订不上改 Kutscherhof 电话 +39 0472 802674。" },
-  { id:"prep-20", cat:"🍽 订位", a:"Finsterwirt（10/13 晚 19:30 · Brixen）",
-    d:"官网 finsterwirt.com 或邮件 info@finsterwirt.com。" },
-  { id:"prep-22c", cat:"🍽 订位", a:"fink（10/14 晚 19:45 · Brixen）",
-    d:"官网 fink1896.it 在线订，顺便确认周三开；订不上改 Vitis 官网表单或电话 +39 0472 835343。" },
-  { id:"prep-22d", cat:"🅿️ 停车", a:"Zans 停车场 10/14（可选）",
-    d:"villnoess.eu 线上订位 €12；10 月中旬工作日现场 €10 一般有位，不订也行。" },
-  { id:"prep-17", cat:"🍽 订位", a:"Ratanà（10/15 晚 19:45 · 米兰）",
-    d:"官网表单订，收到确认邮件才算。" },
-  { id:"prep-38", cat:"🎫 门票", a:"锡耶纳天空之门 Porta del Cielo：10/9 16:00 场 €21 × 3（含整个教堂 + 图书馆）",
-    d:"官网 operaduomo.siena.it 或 vivaticket 买；30 分钟一场、18 人，提前 10 分钟到集合点。订不到 16:00 就现场买最近一场。",
-    link:{u:"https://operaduomo.siena.it/en/the-gate-of-heaven/", l:"operaduomo.siena.it"} },
-  { id:"prep-37", cat:"🍽 订位", a:"Trattoria Tre Colli（10/15 午 12:00 · Sommacampagna，去米兰路上）",
-    d:"只能电话订 +39 045 515935；周四 12:00–15:00，周三休。" },
-  { id:"prep-18", cat:"🍽 订位", a:"Nerino Dieci（10/16 晚 19:30 · 米兰）",
-    d:"官网订；没有意大利手机号订不上就电话 +39 02 3983 1019。订不上改 Trippa 电话 / WhatsApp +39 327 668 7908。" }
-]},
-{ when:"9/28-10/2 做", items:[
-  { id:"prep-32", cat:"🎫 门票", a:"万神殿 10/8 9:00 时段票 €7 × 3：Musei Italiani 提前买（实名）",
-    d:"官方只认 Musei Italiani（网页或同名 App，先注册账号）：搜 Pantheon → 日期 08/10/2026 → 时段 9:00 → 3 张 Intero €7 → 填三个人名 → 刷卡 → 二维码在 App 和邮件里，进门出示 + 护照。当月票 10/1 后开卖，那天买好。",
-    link:{u:"https://portale.museiitaliani.it/", l:"官方售票 portale.museiitaliani.it"} },
-  { id:"prep-23", cat:"🍽 订位（10 月才开放）", a:"Pietro al Pantheon（10/7 晚 19:00 · 罗马）",
-    d:"TheFork 或电话 +39 06 678 9940；桌少必须订，要里面的桌，别迟到超过 15 分钟。订不上改 Antonio al Pantheon。" },
-  { id:"prep-24", cat:"🍽 订位（10 月才开放）", a:"Spirito di Vino（10/8 晚 19:15 · 罗马）",
-    d:"官网在线订。" },
-  { id:"prep-25", cat:"🍽 订位（10 月才开放）", a:"Da Carletto（10/11 晚 19:15 · 威尼斯）",
-    d:"电话 +39 041 522 7944 或 TheFork/OpenTable；订不上改 Al Gobbo di Rialto（+39 041 520 4603）。" },
-  { id:"prep-28", cat:"📱 手机", a:"装好绑卡：FreeNow（打车）、TheFork（订位）、Trenord（10/17 火车票）" },
-  { id:"prep-29", cat:"📱 手机", a:"下离线地图 + 徒步路线离线包",
-    d:"AllTrails 或 Komoot 存离线：Seceda 顶站 → Pieralongia 方向 6 号步道（D8 草甸来回）、Lago di Braies 环湖 3.6 km（D9）；备选下山线 Col Raiser - Seceda - Pieralongia。" }
-]},
-{ when:"出发前 · 10/3-10/5", items:[
-  { id:"prep-30", cat:"💶 现金 / 证件", a:"备 600 欧现金（三人合计，20/50 面额）",
-    d:"城市税约 €150 + 零花 €300 + 备用 €150；100 面额很多店不收。" },
-  { id:"prep-33", cat:"💶 现金 / 证件", a:"护照复印 2 份 + 2 张白底证件照放行李",
-    d:"护照丢了办旅行证要用；驾照原件 + 宣誓翻译件 + 小白本两个驾驶员各带各的。" },
-  { id:"prep-31", cat:"🎒 行李", a:"带 USB 口充电线（车上用）+ 深色布一块（盖后备箱行李）" },
-  { id:"prep-34", cat:"🎒 行李", a:"按「行囊」tab 打包，教堂遮肩的披肩、山上的轻羽绒别忘" }
-]},
-{ when:"到意大利后", items:[
-  { id:"prep-26", cat:"🍽 订位", a:"10/10 前后：Osteria da Alberto（10/12 午 11:30 · 威尼斯）",
-    d:"只接 WhatsApp / 电话 +39 041 523 8153。" },
   { id:"prep-5c", cat:"🎫 门票", a:"10/10 晚看完预报再买：Seceda 缆车时段票，seceda.it 订晴天那天 10:30 时段，3 张往返（€74/人，不退不改）",
     d:"看准天气再买；天气差就和 Day 9 对调再买。10/13 没有通票可用（Gardena Card 只到 10/11，Supersummer 不含 Seceda）。",
     link:{u:"https://www.seceda.it", l:"seceda.it"} },
   { id:"prep-35", cat:"🎫 门票", a:"10/15：Trenord App 买 10/17 8:55 Malpensa Express 三张（€15/人），顺手查 trenord.it 有没有施工改公交" },
   { id:"prep-36", cat:"✈️ 回程", a:"10/16：东航 App 网上值机，看 MU244 在 T1 的值机柜台号" }
-]}
+]},
+{ when:"📞 订位（电话 / 官网 / TheFork，时间都已定）", items:[
+  { id:"prep-23", cat:"🍽 罗马", a:"Pietro al Pantheon（10/7 晚 19:00）",
+    d:"TheFork 或电话 +39 06 678 9940；桌少必须订，要里面的桌，别迟到超过 15 分钟。订不上改 Antonio al Pantheon。" },
+  { id:"prep-24", cat:"🍽 罗马", a:"Spirito di Vino（10/8 晚 19:15）",
+    d:"官网在线订。" },
+  { id:"prep-11", cat:"🍽 托斯卡纳", a:"La Taverna di San Giuseppe（10/9 午 13:45 · 锡耶纳）",
+    d:"官网订。",
+    link:{u:"https://www.tavernasangiuseppe.it", l:"tavernasangiuseppe.it"} },
+  { id:"prep-12", cat:"🍽 托斯卡纳", a:"Acquacheta（10/9 晚 19:30 · Montepulciano）：请房东 Arnd 代打",
+    d:"电话 +39 0578 717086，只收电话。订不上改 La Grotta 官网表单。" },
+  { id:"prep-22", cat:"🍽 佛罗伦萨", a:"Coquinarius（10/10 午 12:30）",
+    d:"TheFork 或电话 +39 055 230 2153。" },
+  { id:"prep-16", cat:"🍽 佛罗伦萨", a:"Cibrèo Ristorante（10/10 晚 19:30）",
+    d:"TheFork 在线订。" },
+  { id:"prep-37", cat:"🍽 佛罗伦萨", a:"Antica Trattoria da Tito（10/11 午 12:45）",
+    d:"圣马可修道院旁走 7 分钟，周日午市 12:30 起；电话 +39 055 472475，或让 Donna 代打。",
+    link:{u:"https://www.trattoriadatito.com/", l:"trattoriadatito.com"} },
+  { id:"prep-25", cat:"🍽 威尼斯", a:"Da Carletto（10/11 晚 19:15）",
+    d:"电话 +39 041 522 7944 或 TheFork/OpenTable；订不上改 Al Gobbo di Rialto（+39 041 520 4603）。" },
+  { id:"prep-26", cat:"🍽 威尼斯", a:"Osteria da Alberto（10/12 午 11:30）",
+    d:"只接 WhatsApp / 电话 +39 041 523 8153。" },
+  { id:"prep-21", cat:"🍽 Brixen", a:"Traubenwirt（10/12 晚 19:30）",
+    d:"电话 +39 0472 836552；订不上改 Kutscherhof 电话 +39 0472 802674。" },
+  { id:"prep-20", cat:"🍽 Brixen", a:"Finsterwirt（10/13 晚 19:30）",
+    d:"官网 finsterwirt.com 或邮件 info@finsterwirt.com。" },
+  { id:"prep-22c", cat:"🍽 Brixen", a:"fink（10/14 晚 19:45）",
+    d:"官网 fink1896.it 在线订，顺便确认周三开；订不上改 Vitis 官网表单或电话 +39 0472 835343。" },
+  { id:"prep-39", cat:"🍽 米兰", a:"Trattoria Tre Colli（10/15 午 12:00 · Sommacampagna，去米兰路上）",
+    d:"只能电话订 +39 045 515935；周四 12:00–15:00，周三休。" },
+  { id:"prep-17", cat:"🍽 米兰", a:"Ratanà（10/15 晚 19:45）",
+    d:"官网表单订，收到确认邮件才算。" },
+  { id:"prep-18", cat:"🍽 米兰", a:"Nerino Dieci（10/16 晚 19:30）",
+    d:"官网订；没有意大利手机号订不上就电话 +39 02 3983 1019。订不上改 Trippa 电话 / WhatsApp +39 327 668 7908。" }
+]},
+{ when:"🏷 现场买 / 现场排队（不用提前）", items:[
+  { id:"prep-3", cat:"🎫 门票", a:"罗马两个博物馆都现场买：10/7 卡比托利欧 €15（末入 18:30）、10/8 Doria Pamphilj €16 含语音导览（周四 9:00 开）",
+    d:"博尔盖塞售罄放弃。两家都不用预约、不排长队。",
+    link:{u:"https://www.museicapitolini.org/en", l:"museicapitolini.org"} },
+  { id:"prep-14", cat:"🎫 门票", a:"圣马可修道院：10/11 当天现场买（€11/人），不用预约",
+    d:"周二到周日 8:30–13:50，末入 12:45；10/11 是第二个周日，开。小馆不排队。",
+    link:{u:"https://museitoscana.cultura.gov.it/luoghi_della_cultura/museo_di_san_marco/", l:"官方页面"} },
+  { id:"prep-40", cat:"🎫 门票", a:"多洛米蒂两天都是现场：Braies 划船 €55 一艘排队（10:00 开）、Seceda 车库不用预约、Zans 停车 €10 现金",
+    d:"Zans 想保险可以 villnoess.eu 线上订 €12，10 月中旬工作日一般有位。" }
+]},
+{ when:"💬 给房东 / 酒店发消息", items:[
+  { id:"prep-6", cat:"💬 罗马", a:"Sara：10/6 19:10 落地，约 21:15 到",
+    d:"落地和上车各发一条消息，请她接应——这单是亲自迎接，不是密码锁。" },
+  { id:"prep-7", cat:"💬 佛罗伦萨", a:"Donna：车位 + ZTL 报牌 + 10/10 12:00 放行李 + 10/11 停到 14:30",
+    d:"一次问清：车位在哪；帮报 ZTL 车牌（没报就是罚单）；顺便请她代打 da Tito。" },
+  { id:"prep-9", cat:"💬 威尼斯", a:"Mestre 酒店：10/11 晚要车位，10/12 车停到 14:00",
+    d:"Best Western Plus Hotel Bologna，电话 0039-041-931000；城市税 €9.3 到店现金付。" },
+  { id:"prep-41", cat:"💬 Brixen", a:"Sandra：问住客停车 / 老城 ZTL 临时通行；Guest Pass 邮件里三个链接存手机",
+    d:"Kreuzgasse 在老城 H 区，只有 7:00–10:00 可进 30 分钟卸货；没有住客车位就停 Parkplatz Priel（€1.30/小时，夜间 €0.60，走 6 分钟）。Guest Pass 10/12–10/15 有效，南蒂罗尔公交全免费。" },
+  { id:"prep-8", cat:"💬 米兰", a:"Luca：问入住方式 + 10/15 15:00 能不能先放箱子",
+    d:"Viale Lunigiana 4，15:00 后入住；10/17 早 7:50 退房。" }
+]},
+{ when:"📱 出发前 · 10/3-10/5", items:[
+  { id:"prep-28", cat:"📱 手机", a:"装好绑卡：FreeNow（打车）、TheFork（订位）、Trenitalia（10/11-12 Mestre 火车票）、AVM Venezia Official（水上巴士票）、Musei Italiani（万神殿票）、Trenord（10/17 机场火车）" },
+  { id:"prep-29", cat:"📱 手机", a:"下离线地图 + 徒步路线离线包",
+    d:"Komoot 或 AllTrails 存离线：D8 Seceda 环线（顶站 → 山顶十字架 → 1 号步道 → Pieralongia → Troier → 顶站）、D9 Lago di Braies 环湖 3.6 km；备选轻版：Seceda 山脊 + 6 号步道草甸来回。" },
+  { id:"prep-30", cat:"💶 现金 / 证件", a:"备 600 欧现金（三人合计，20/50 面额）",
+    d:"城市税约 €150 + 零花 €300 + 备用 €150；100 面额很多店不收。" },
+  { id:"prep-33", cat:"💶 现金 / 证件", a:"护照复印 2 份 + 2 张白底证件照放行李",
+    d:"护照丢了办旅行证要用；驾照原件 + 宣誓翻译件 + 小白本两个驾驶员各带各的。" },
+  { id:"prep-31", cat:"🎒 行李", a:"带 USB 口充电线（车上用）+ 深色布一块（盖后备箱行李）" },
+  { id:"prep-34", cat:"🎒 行李", a:"按「行囊」tab 打包，教堂遮肩的披肩、山上的轻羽绒和登山鞋别忘" }
+]},
+{ when:"✅ 已订好 · 备查", items:[
+  { id:"prep-1", cat:"🎫 讲解团", a:"斗兽场 + 古罗马广场 + 帕拉蒂尼山：罗罗旅行 10/7 13:30 场（含 Arena）",
+    d:"含票，3 人，用护照拼音出票：TANG YANHUI / SU YIWEN / ZHU YING。斗兽场门口集合，13:00 到；2.5-3 小时。" },
+  { id:"prep-2", cat:"🎫 讲解团", a:"梵蒂冈：罗罗旅行 10/8 13:30 场",
+    d:"含票，3 人。梵蒂冈博物馆入口集合，13:00 到，按通知。" },
+  { id:"prep-4", cat:"🎫 门票", a:"学院美术馆 + 巴杰罗 48 小时通票：已买（€26/人，学院 10/10 15:30 场）",
+    d:"巴杰罗排在 10/10 学院出来后（可选），用同一张二维码进；确认邮件截图存到手机相册。",
+    link:{u:"https://www.b-ticket.com", l:"b-ticket.com"} },
+  { id:"prep-5", cat:"🎫 讲解团", a:"乌菲兹讲解团：10/11 9:00 场",
+    d:"含票。" },
+  { id:"prep-5b", cat:"🎫 门票", a:"圣马可大教堂：不进（10/12 上午所有票种售罄，Day 7 不专门去，Day 6 晚上看广场）",
+    d:"想赌退票：出发前再看一次官方售票页，有 9:30 或 10:30 场就买 Complete 联票（成人 €30），Day 7 贡多拉后改成进去看 1 小时。",
+    link:{u:"https://tickets.basilicasanmarco.it/", l:"官方售票页 tickets.basilicasanmarco.it"} },
+  { id:"prep-10", cat:"🚗 租车", a:"Europcar 已订（订单 1207535989）：10/9 周五 9:30 Termini 取，10/15 周四 16:00 米兰 Via Vittor Pisani 19 还",
+    d:"主驾妈妈 ZHU YING，第二驾驶员已含。VW Tiguan 自动挡或同级（4 件行李），Comfort+ 套餐：Premium 保障（碰撞、盗窃、关键部件）+ 道路救援 Plus + 单程费 + 第二驾驶员，已付 €857.04，取车只冻 €100 押金。取车：Rome Termini Railway Station，Via Giolitti 34 车站租车中心，当天 8:00–20:00，电话 +39 06 4882854；在线值机失败，柜台人工核证件。还车：车开进 Via Vittor Pisani 19 地下二层，门店在 Via Luigi Galvani 12，当天 7:30–21:00，电话 +39 02 66987826。带：每位驾驶员驾照原件 + 意大利语宣誓翻译件 + 护照；妈妈本人名下实体信用卡（不收虚拟卡、预付卡、Maestro、手机支付）。油：满取满还，进米兰前加满。合同上看 Carburante（油种）和 Franchigia（免赔额）两栏。",
+    link:{u:"https://www.europcar.it/?openB2cLogin=true", l:"My Europcar 查订单"} },
+  { id:"prep-13", cat:"📄 证件", a:"签证 + 两个驾驶员的驾照宣誓翻译件",
+    d:"租租车 App 的小白本一起带。" }
+], note:"六站住宿已订好。Airbnb 的门锁密码和 WiFi，入住前 48 小时在 App 订单页看。" }
 ];
 
 /* ---------------- 行囊 ---------------- */
@@ -2161,7 +2169,7 @@ var PACK = [
   { id:"pack-10", a:"秋天的衣服", d:"早晚和北边凉：长袖 2 件、薄毛衣 1 件、长裤 2 条；能洗衣就按 5 天量带。" },
   { id:"pack-11", a:"轻羽绒", d:"多洛米蒂三天必备，山上接近 0°C。" },
   { id:"pack-12", a:"防风外套 / 薄雨衣", d:"山脊风大，套在羽绒外面；十月会下雨，兼当雨衣。" },
-  { id:"pack-13", a:"舒适走路鞋", d:"全程石板路加威尼斯的桥；塞切达那天走 2 小时草甸碎石，鞋底要厚。" },
+  { id:"pack-13", a:"舒适走路鞋 + 一双登山鞋", d:"全程石板路加威尼斯的桥；塞切达那天环线 3 小时、下 230 上 250 米碎石路，10/12 冷锋后可能有雪，鞋底要厚、最好防滑。" },
   { id:"pack-14", a:"帽子 · 围巾 · 薄手套", d:"山上早晨用得上；围巾在教堂能当遮肩。" },
   { id:"pack-15", a:"内衣袜子 · 睡衣 · 拖鞋", d:"意大利民宿基本不备拖鞋。" }
 ]},
@@ -2819,23 +2827,28 @@ function viewPrep(){
   PREP.forEach(function(g){ total += g.items.length; done += grpDone(g.items); });
   var h = "";
   h += '<div class="head"><div class="head-row"><span class="head-title">出发前要办的事</span><span class="head-sub num">' + done + "/" + total + '</span><span class="sync" id="sync"><span class="dot"></span>仅本机记录</span></div><div style="height:10px"></div></div>';
-  PREP.forEach(function(g){
-    h += '<div class="grp"><div class="gtitle"><span class="gwhen">' + esc(g.when) + '</span><span class="gc num" data-gc="' + esc(g.when) + '">' + grpDone(g.items) + "/" + g.items.length + "</span></div>";
-    var lastCat = null;
-    h += '<ul class="steps">';
-    g.items.forEach(function(it){
-      if(it.cat && it.cat !== lastCat){
-        h += '</ul><div class="pcat">' + esc(it.cat) + '</div><ul class="steps">';
-        lastCat = it.cat;
-      }
-      var s = { id:it.id, t:"", e:"", a:it.a, sub:it.d, link:it.link };
-      h += stepHtml(s);
+  function itemsHtml(items){
+    var out = '<ul class="steps">', lastCat = null;
+    items.forEach(function(it){
+      if(it.cat && it.cat !== lastCat){ out += '</ul><div class="pcat">' + esc(it.cat) + '</div><ul class="steps">'; lastCat = it.cat; }
+      out += stepHtml({ id:it.id, t:"", e:"", a:it.a, sub:it.d, link:it.link });
     });
-    h += "</ul>";
+    return out + "</ul>";
+  }
+  var doneItems = [];
+  PREP.forEach(function(g){
+    var todo = g.items.filter(function(it){ return STATE[it.id] !== "done"; });
+    g.items.forEach(function(it){ if(STATE[it.id] === "done") doneItems.push(it); });
+    if(!todo.length && !g.note) return;
+    h += '<div class="grp"><div class="gtitle"><span class="gwhen">' + esc(g.when) + '</span><span class="gc num" data-gc="' + esc(g.when) + '">' + grpDone(g.items) + "/" + g.items.length + "</span></div>";
+    if(todo.length) h += itemsHtml(todo);
     if(g.note) h += '<div class="call"><b>提醒</b>' + esc(g.note) + "</div>";
     h += "</div>";
   });
-  h += '<div class="foot">全部内容来自《意大利 12 天行程 · 详版清单》。打勾在三台手机之间共享。</div>';
+  if(doneItems.length){
+    h += '<details class="donebox"><summary>已完成 ' + doneItems.length + ' 项（点开看，点一下可以撤销）</summary>' + itemsHtml(doneItems) + '</details>';
+  }
+  h += '<div class="foot">打勾的事会收进「已完成」里。打勾在三台手机之间共享。</div>';
   return h;
 }
 
